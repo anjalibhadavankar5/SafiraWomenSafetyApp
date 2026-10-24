@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+  <title>Safira – Women Safety App</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+/* ── Self-Defence Popup ── */
+#self-defence-popup{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;}
+.sdf-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);}
+.sdf-modal{position:relative;background:linear-gradient(135deg,#1a0a0f 0%,#2d1a20 100%);border:1.5px solid rgba(232,48,90,0.4);border-radius:20px;padding:28px 24px 24px;max-width:340px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.05);}
+.sdf-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.sdf-badge{background:rgba(232,48,90,0.2);border:1px solid rgba(232,48,90,0.5);color:#E8305A;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:20px;}
+.sdf-close{background:rgba(255,255,255,0.08);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.sdf-icon{font-size:52px;margin:8px 0 12px;}
+.sdf-title{color:#fff;font-size:20px;font-weight:700;margin:0 0 10px;}
+.sdf-body{color:rgba(255,255,255,0.75);font-size:14px;line-height:1.6;margin:0 0 16px;}
+.sdf-divider{height:1px;background:rgba(255,255,255,0.1);margin:0 0 14px;}
+.sdf-alert{color:#E8305A;font-size:12px;font-weight:600;margin:0 0 16px;padding:8px 12px;background:rgba(232,48,90,0.12);border-radius:8px;}
+.sdf-btn-all{width:100%;padding:12px;background:linear-gradient(135deg,#E8305A,#c0183a);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     PAGE: LOGIN
+══════════════════════════════════ -->
+<div id="page-login" class="page active">
+  <div class="auth-bg">
+    <div class="auth-circles"></div>
+    <div class="auth-box">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1C8.96 1 6.5 3.46 6.5 6.5c0 2.65 1.78 4.88 4.19 5.56L9.5 15.5H14.5L13.31 12.06C15.72 11.38 17.5 9.15 17.5 6.5 17.5 3.46 15.04 1 12 1zm0 9c-1.38 0-2.5-1.12-2.5-2.5S10.62 5 12 5s2.5 1.12 2.5 2.5S13.38 10 12 10zM9 17l-2 6h10l-2-6H9z"/></svg>
+        </div>
+        <h1>Safira</h1>
+        <p>Women Safety App</p>
+      </div>
+      <div class="auth-form">
+        <h2>Welcome Back</h2>
+        <p class="auth-sub">Sign in to stay protected</p>
+        <div class="inp-group">
+          <label>Email / Phone Number</label>
+          <input type="text" id="login-identifier" placeholder="Email or +91 98765 43210" autocomplete="username"/>
+        </div>
+        <div class="inp-group">
+          <label>Password</label>
+          <input type="password" id="login-pass" placeholder="Enter your password"/>
+        </div>
+        <button class="btn-primary" onclick="doLogin()">Login</button>
+        <p class="auth-switch">New to Safira? <span onclick="showPage('page-signup')">Create Account</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: SIGNUP
+══════════════════════════════════ -->
+<div id="page-signup" class="page">
+  <div class="auth-bg">
+    <div class="auth-box signup-box">
+      <div class="auth-logo small">
+        <div class="auth-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 1C8.96 1 6.5 3.46 6.5 6.5c0 2.65 1.78 4.88 4.19 5.56L9.5 15.5H14.5L13.31 12.06C15.72 11.38 17.5 9.15 17.5 6.5 17.5 3.46 15.04 1 12 1zm0 9c-1.38 0-2.5-1.12-2.5-2.5S10.62 5 12 5s2.5 1.12 2.5 2.5S13.38 10 12 10zM9 17l-2 6h10l-2-6H9z"/></svg></div>
+        <h1>Safira</h1>
+      </div>
+      <div class="auth-form">
+        <h2>Create Account</h2>
+        <p class="auth-sub">Register to stay safe everywhere</p>
+        <div class="inp-row">
+          <div class="inp-group">
+            <label>Full Name</label>
+            <input type="text" id="su-name" placeholder="Your name"/>
+          </div>
+          <div class="inp-group">
+            <label>Age</label>
+            <input type="number" id="su-age" placeholder="Age" min="10" max="100"/>
+          </div>
+        </div>
+        <div class="inp-group">
+          <label>Email (optional)</label>
+          <input type="email" id="su-email" placeholder="yourname@email.com"/>
+        </div>
+        <div class="inp-group">
+          <label>Phone Number</label>
+          <input type="tel" id="su-phone" placeholder="+91 98765 43210"/>
+        </div>
+        <div class="inp-group">
+          <label>Address</label>
+          <input type="text" id="su-address" placeholder="Street address"/>
+        </div>
+        <div class="inp-row">
+          <div class="inp-group">
+            <label>City</label>
+            <input type="text" id="su-city" placeholder="City"/>
+          </div>
+          <div class="inp-group">
+            <label>State</label>
+            <select id="su-state">
+              <option value="">Select State</option>
+              <option>Maharashtra</option><option>Delhi</option><option>Karnataka</option>
+              <option>Tamil Nadu</option><option>Gujarat</option><option>Rajasthan</option>
+              <option>Uttar Pradesh</option><option>West Bengal</option><option>Telangana</option>
+              <option>Madhya Pradesh</option><option>Punjab</option><option>Haryana</option>
+              <option>Kerala</option><option>Bihar</option><option>Odisha</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="inp-group">
+          <label>Password</label>
+          <input type="password" id="su-pass" placeholder="Create password"/>
+        </div>
+        <div class="section-label">Emergency Contact</div>
+        <div class="inp-row">
+          <div class="inp-group">
+            <label>Contact Name</label>
+            <input type="text" id="su-ename" placeholder="Parent / Guardian"/>
+          </div>
+          <div class="inp-group">
+            <label>Their Number</label>
+            <input type="tel" id="su-ephone" placeholder="+91 XXXXX XXXXX"/>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="doSignup()">Create Account</button>
+        <p class="auth-switch">Already have account? <span onclick="showPage('page-login')">Login</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: HOME (Main Dashboard)
+══════════════════════════════════ -->
+<div id="page-home" class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 1C8.96 1 6.5 3.46 6.5 6.5c0 2.65 1.78 4.88 4.19 5.56L9.5 15.5H14.5L13.31 12.06C15.72 11.38 17.5 9.15 17.5 6.5 17.5 3.46 15.04 1 12 1zm0 9c-1.38 0-2.5-1.12-2.5-2.5S10.62 5 12 5s2.5 1.12 2.5 2.5S13.38 10 12 10zM9 17l-2 6h10l-2-6H9z"/></svg></div>
+        <div><span class="logo-text">Safira</span><span class="logo-sub">Women Safety</span></div>
+      </div>
+      <div class="safe-badge"><div class="safe-dot"></div><span>Protected</span></div>
+    </div>
+    <div class="user-info">
+      <div class="avatar" id="home-avatar">S</div>
+      <div class="user-details">
+        <p>Welcome back</p>
+        <h3 id="home-name">Safira User</h3>
+        <div class="location-pill">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <span id="home-location">Locating...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOS Button -->
+  <div class="sos-section">
+    <p class="sos-label">Emergency SOS</p>
+    <div class="sos-ring-wrap">
+      <div class="sos-outer"><div class="sos-mid">
+        <button class="sos-btn" id="sosBtn" onclick="triggerSOS()">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          <span class="sos-btn-text">SOS</span>
+        </button>
+      </div></div>
+    </div>
+    <p class="sos-hint">Press to send emergency alert with live location</p>
+    <div class="sos-methods">
+      <div class="method-pill"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>Say "Help Me"</div>
+      <div class="method-pill"><svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99z"/></svg>Power × 4</div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-item"><svg viewBox="0 0 24 24" style="fill:#22C55E"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99z"/></svg><span style="color:#22C55E;font-weight:600;">GPS Active</span></div>
+    <div class="status-div"></div>
+    <div class="status-item"><svg viewBox="0 0 24 24" style="fill:#F4B942"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/></svg><span style="color:#F4B942;font-weight:600;">Voice On</span></div>
+    <div class="status-div"></div>
+    <div class="status-item"><svg viewBox="0 0 24 24" style="fill:#60A5FA"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg><span style="color:#60A5FA;font-weight:600;" id="contact-count">0 Contacts</span></div>
+  </div>
+
+  <!-- Quick Actions -->
+  <p class="sec-title">Quick <span>Actions</span></p>
+  <div class="quick-grid">
+    <div class="quick-card" onclick="showPage('page-nearby')">
+      <div class="quick-icon blue"><svg viewBox="0 0 24 24" style="fill:#1D4ED8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+      <span>Nearby Help</span>
+    </div>
+    <div class="quick-card" onclick="showPage('page-navigate')">
+      <div class="quick-icon green"><svg viewBox="0 0 24 24" style="fill:#16A34A"><path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98L21 3z"/></svg></div>
+      <span>Safe Route</span>
+    </div>
+    <div class="quick-card" onclick="showPage('page-tips')">
+      <div class="quick-icon gold"><svg viewBox="0 0 24 24" style="fill:#B45309"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+      <span>Self Defence</span>
+    </div>
+    <div class="quick-card" onclick="triggerFakeCall()">
+      <div class="quick-icon rose"><svg viewBox="0 0 24 24" style="fill:#E8305A"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+      <span>Fake Call</span>
+    </div>
+  </div>
+
+  <!-- Emergency Contacts Preview -->
+  <p class="sec-title">Emergency <span>Contacts</span></p>
+  <div class="contacts-wrap">
+    <div id="home-contacts-list"></div>
+    <button class="add-contact" onclick="showPage('page-contacts')">
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      Manage Emergency Contacts
+    </button>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Self Defence Tips Preview -->
+  <p class="sec-title">Safety <span>Tip of the Day</span></p>
+  <div class="tip-preview" onclick="showPage('page-tips')">
+    <div class="tip-preview-icon">💪</div>
+    <div class="tip-preview-text">
+      <p>Stay aware of your surroundings. Attackers target distracted people. Keep your head up, avoid phone use while walking alone at night.</p>
+      <span>View all tips →</span>
+    </div>
+  </div>
+
+  <div style="height:80px;"></div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="navTo(this,'page-home')"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+    <div class="nav-item" onclick="navTo(this,'page-nearby')"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>Nearby</span></div>
+    <div class="nav-item" onclick="navTo(this,'page-tips')"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg><span>Tips</span></div>
+    <div class="nav-item" onclick="navTo(this,'page-contacts')"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span>Contacts</span></div>
+    <div class="nav-item" onclick="navTo(this,'page-profile')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Profile</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: EMERGENCY CONTACTS
+══════════════════════════════════ -->
+<div id="page-contacts" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+    <h2>Emergency Contacts</h2>
+    <div></div>
+  </div>
+
+  <div class="page-body">
+    <div class="info-banner">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      When SOS is triggered, an SMS with your live GPS location is automatically sent to all contacts below.
+    </div>
+
+    <div id="contacts-list-full"></div>
+
+    <!-- Add Contact Form -->
+    <div class="add-contact-form">
+      <p class="form-title">Add New Contact</p>
+      <div class="inp-group"><label>Contact Name</label><input type="text" id="new-cname" placeholder="e.g. Mummy, Papa, Friend"/></div>
+      <div class="inp-group"><label>Relationship</label>
+        <select id="new-crel">
+          <option>Mother</option><option>Father</option><option>Sister</option>
+          <option>Brother</option><option>Friend</option><option>Guardian</option><option>Other</option>
+        </select>
+      </div>
+      <div class="inp-group"><label>Phone Number</label><input type="tel" id="new-cphone" placeholder="+91 XXXXX XXXXX"/></div>
+      <button class="btn-primary" onclick="addContact()">Add Contact</button>
+    </div>
+
+    <div class="sms-info-card">
+      <div class="sms-info-icon">📱</div>
+      <div>
+        <p>SMS Format on SOS</p>
+        <span>"🚨 EMERGENCY! [Name] needs help! Live location: maps.google.com/?q=[lat],[lng] — Sent via Safira App"</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: NEARBY HELP
+══════════════════════════════════ -->
+<div id="page-nearby" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+    <h2>Nearby Help</h2>
+    <div></div>
+  </div>
+  <div class="page-body">
+    <div class="nearby-tabs">
+      <button class="ntab active" onclick="filterNearby('all',this)">All</button>
+      <button class="ntab" onclick="filterNearby('police',this)">Police</button>
+      <button class="ntab" onclick="filterNearby('hospital',this)">Hospital</button>
+      <button class="ntab" onclick="filterNearby('women',this)">Women Cell</button>
+    </div>
+
+    <div id="nearby-map-box" class="nearby-map-box">
+      <div class="map-grid"></div>
+      <svg class="map-roads" viewBox="0 0 360 160" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 80 Q90 40 180 80 Q270 120 360 60" stroke="rgba(255,255,255,0.12)" stroke-width="8" fill="none"/>
+        <path d="M0 120 Q120 100 200 60 Q280 20 360 40" stroke="rgba(255,255,255,0.08)" stroke-width="5" fill="none"/>
+        <path d="M60 0 Q80 80 100 160" stroke="rgba(255,255,255,0.08)" stroke-width="5" fill="none"/>
+        <circle cx="180" cy="80" r="8" fill="#E8305A"/>
+        <circle cx="180" cy="80" r="16" fill="rgba(232,48,90,0.3)"/>
+        <circle cx="80" cy="55" r="6" fill="#3B82F6"/>
+        <circle cx="260" cy="70" r="6" fill="#22C55E"/>
+        <circle cx="140" cy="110" r="6" fill="#F4B942"/>
+        <circle cx="300" cy="45" r="6" fill="#3B82F6"/>
+      </svg>
+      <div class="map-you-label">📍 You are here</div>
+    </div>
+
+    <div id="nearby-list">
+      <div class="nearby-item police-item" data-type="police" onclick="openMaps('Police Station','police')">
+        <div class="nearby-item-icon police"><svg viewBox="0 0 24 24" style="fill:#1D4ED8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+        <div class="nearby-item-info"><p>City Police Station</p><span>0.8 km · Open 24/7</span></div>
+        <div class="nearby-item-actions">
+          <button class="call-police-btn" onclick="event.stopPropagation();window.location='tel:100'">Call 100</button>
+          <div class="dir-btn">→</div>
+        </div>
+      </div>
+      <div class="nearby-item police-item" data-type="police" onclick="openMaps('Police Station','police')">
+        <div class="nearby-item-icon police"><svg viewBox="0 0 24 24" style="fill:#1D4ED8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+        <div class="nearby-item-info"><p>Traffic Police Post</p><span>1.4 km · Open 24/7</span></div>
+        <div class="nearby-item-actions">
+          <button class="call-police-btn" onclick="event.stopPropagation();window.location='tel:100'">Call 100</button>
+          <div class="dir-btn">→</div>
+        </div>
+      </div>
+      <div class="nearby-item hospital-item" data-type="hospital" onclick="openMaps('Hospital','hospital')">
+        <div class="nearby-item-icon hospital"><svg viewBox="0 0 24 24" style="fill:#065F46"><path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg></div>
+        <div class="nearby-item-info"><p>City General Hospital</p><span>1.2 km · Emergency 24/7</span></div>
+        <div class="nearby-item-actions">
+          <button class="call-police-btn" style="background:rgba(34,197,94,0.15);color:#16A34A;" onclick="event.stopPropagation();window.location='tel:108'">Call 108</button>
+          <div class="dir-btn">→</div>
+        </div>
+      </div>
+      <div class="nearby-item hospital-item" data-type="hospital" onclick="openMaps('Hospital','hospital')">
+        <div class="nearby-item-icon hospital"><svg viewBox="0 0 24 24" style="fill:#065F46"><path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg></div>
+        <div class="nearby-item-info"><p>Primary Health Centre</p><span>2.1 km · 8AM – 8PM</span></div>
+        <div class="nearby-item-actions">
+          <button class="call-police-btn" style="background:rgba(34,197,94,0.15);color:#16A34A;" onclick="event.stopPropagation();window.location='tel:108'">Call 108</button>
+          <div class="dir-btn">→</div>
+        </div>
+      </div>
+      <div class="nearby-item women-item" data-type="women" onclick="openMaps('Women Help Center','women')">
+        <div class="nearby-item-icon women"><svg viewBox="0 0 24 24" style="fill:#B01E40"><path d="M12 2C8.96 2 6.5 4.46 6.5 7.5c0 2.65 1.78 4.88 4.19 5.56L9.5 16.5H14.5L13.31 13.06C15.72 12.38 17.5 10.15 17.5 7.5 17.5 4.46 15.04 2 12 2z"/></svg></div>
+        <div class="nearby-item-info"><p>Women Help Center</p><span>2.5 km · 24/7 Helpline</span></div>
+        <div class="nearby-item-actions">
+          <button class="call-police-btn" style="background:rgba(232,48,90,0.12);color:#E8305A;" onclick="event.stopPropagation();window.location='tel:1091'">Call 1091</button>
+          <div class="dir-btn">→</div>
+        </div>
+      </div>
+      <div class="nearby-item women-item" data-type="women" onclick="openMaps('Women Police Station','women')">
+        <div class="nearby-item-icon women"><svg viewBox="0 0 24 24" style="fill:#B01E40"><path d="M12 2C8.96 2 6.5 4.46 6.5 7.5c0 2.65 1.78 4.88 4.19 5.56L9.5 16.5H14.5L13.31 13.06C15.72 12.38 17.5 10.15 17.5 7.5 17.5 4.46 15.04 2 12 2z"/></svg></div>
+        <div class="nearby-item-info"><p>Mahila Police Station</p><span>3.1 km · Open 24/7</span></div>
+        <div class="nearby-item-actions">
+          <button class="call-police-btn" style="background:rgba(232,48,90,0.12);color:#E8305A;" onclick="event.stopPropagation();window.location='tel:1091'">Call 1091</button>
+          <div class="dir-btn">→</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="helpline-grid">
+      <p class="sec-title" style="padding:0;margin-bottom:12px;">National <span>Helplines</span></p>
+      <div class="helpline-card" onclick="window.location='tel:100'"><span class="hl-num">100</span><span class="hl-name">Police</span></div>
+      <div class="helpline-card" onclick="window.location='tel:108'"><span class="hl-num">108</span><span class="hl-name">Ambulance</span></div>
+      <div class="helpline-card" onclick="window.location='tel:1091'"><span class="hl-num">1091</span><span class="hl-name">Women Helpline</span></div>
+      <div class="helpline-card" onclick="window.location='tel:181'"><span class="hl-num">181</span><span class="hl-name">Women Distress</span></div>
+      <div class="helpline-card" onclick="window.location='tel:1098'"><span class="hl-num">1098</span><span class="hl-name">Child Helpline</span></div>
+      <div class="helpline-card" onclick="window.location='tel:112'"><span class="hl-num">112</span><span class="hl-name">Emergency</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: SAFE NAVIGATION
+══════════════════════════════════ -->
+<div id="page-navigate" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+    <h2>Safe Navigation</h2>
+    <div></div>
+  </div>
+  <div class="page-body">
+    <div class="nav-search-box">
+      <div class="inp-group"><label>From (Current Location)</label><input type="text" id="nav-from" placeholder="Your current location" value="My Location"/></div>
+      <div class="inp-group"><label>To (Destination)</label><input type="text" id="nav-to" placeholder="Enter destination"/></div>
+      <button class="btn-primary" onclick="startNavigation()">Find Safe Route</button>
+    </div>
+    <div class="safe-map-box">
+      <div class="map-grid"></div>
+      <svg class="map-roads" viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 100 Q90 60 180 100 Q270 140 360 80" stroke="rgba(255,255,255,0.08)" stroke-width="10" fill="none"/>
+        <path d="M0 150 Q120 120 200 80 Q280 40 360 60" stroke="rgba(255,255,255,0.06)" stroke-width="6" fill="none"/>
+        <path d="M80 0 Q90 100 110 200" stroke="rgba(255,255,255,0.06)" stroke-width="6" fill="none"/>
+        <path d="M260 0 Q270 100 280 200" stroke="rgba(255,255,255,0.06)" stroke-width="5" fill="none"/>
+        <path d="M20 100 Q90 70 170 95 Q250 115 340 85" stroke="#22C55E" stroke-width="4" fill="none" stroke-dasharray="8,5" opacity="0.9"/>
+        <circle cx="20" cy="100" r="7" fill="#22C55E"/>
+        <circle cx="340" cy="85" r="7" fill="#F4B942"/>
+        <rect x="150" y="115" width="50" height="22" rx="5" fill="rgba(239,68,68,0.25)" stroke="rgba(239,68,68,0.6)" stroke-width="1.5"/>
+        <text x="175" y="130" font-size="8" fill="rgba(239,68,68,0.95)" text-anchor="middle">⚠ avoid</text>
+      </svg>
+      <div class="map-label"><p>Safe Route Active</p><span id="nav-route-label">Select destination above</span></div>
+      <div class="map-pin"><div class="map-pin-ring"></div><div class="map-pin-dot"></div></div>
+      <div class="safe-route-badge"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg><span>Safe path</span></div>
+    </div>
+    <div class="avoid-tags">
+      <div class="avoid-tag">🌑 Avoids dark streets</div>
+      <div class="avoid-tag">🚫 Avoids crime zones</div>
+      <div class="avoid-tag">💡 Well-lit roads</div>
+      <div class="avoid-tag">👥 Crowded areas</div>
+    </div>
+    <button class="btn-maps" onclick="openGoogleMaps()">
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:white;flex-shrink:0;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      Open in Google Maps
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: SELF DEFENCE TIPS
+══════════════════════════════════ -->
+<div id="page-tips" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+    <h2>Self Defence Tips</h2>
+    <div></div>
+  </div>
+  <div class="page-body">
+    <div class="tips-header-card">
+      <p>Knowledge is your first weapon. Stay informed, stay safe.</p>
+    </div>
+    <div class="tips-categories">
+      <button class="tcat active" onclick="filterTips('all',this)">All</button>
+      <button class="tcat" onclick="filterTips('awareness',this)">Awareness</button>
+      <button class="tcat" onclick="filterTips('physical',this)">Physical</button>
+      <button class="tcat" onclick="filterTips('digital',this)">Digital</button>
+      <button class="tcat" onclick="filterTips('legal',this)">Legal Rights</button>
+    </div>
+    <div id="tips-list">
+      <div class="tip-card" data-cat="awareness">
+        <div class="tip-num">01</div>
+        <div class="tip-content">
+          <div class="tip-tag awareness">Awareness</div>
+          <h4>Stay Alert in Public</h4>
+          <p>Keep your head up and stay aware of your surroundings. Avoid using your phone while walking alone, especially at night. Attackers often target distracted individuals.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="awareness">
+        <div class="tip-num">02</div>
+        <div class="tip-content">
+          <div class="tip-tag awareness">Awareness</div>
+          <h4>Trust Your Instincts</h4>
+          <p>If something feels wrong, it probably is. Don't ignore that inner feeling. Move to a crowded, well-lit place immediately and call someone you trust.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="physical">
+        <div class="tip-num">03</div>
+        <div class="tip-content">
+          <div class="tip-tag physical">Physical</div>
+          <h4>Target Vulnerable Points</h4>
+          <p>In an attack, strike the eyes, nose, throat, or groin with full force. These are the most sensitive areas and can disable an attacker long enough for you to escape.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="physical">
+        <div class="tip-num">04</div>
+        <div class="tip-content">
+          <div class="tip-tag physical">Physical</div>
+          <h4>Use Your Elbows & Knees</h4>
+          <p>Elbows and knees are your strongest natural weapons. At close range, a sharp elbow strike to the face or knee to the groin is extremely effective. Practice in self-defence class.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="physical">
+        <div class="tip-num">05</div>
+        <div class="tip-content">
+          <div class="tip-tag physical">Physical</div>
+          <h4>Break a Wrist Grab</h4>
+          <p>If someone grabs your wrist, rotate your arm toward the attacker's thumb — the weakest point of their grip — and pull sharply. This almost always breaks the hold.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="physical">
+        <div class="tip-num">06</div>
+        <div class="tip-content">
+          <div class="tip-tag physical">Physical</div>
+          <h4>Make Noise & Run</h4>
+          <p>Scream "FIRE!" (people respond faster to fire than assault). Make as much noise as possible and run toward the nearest crowded, well-lit area. Your goal is escape, not fighting.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="awareness">
+        <div class="tip-num">07</div>
+        <div class="tip-content">
+          <div class="tip-tag awareness">Awareness</div>
+          <h4>Safe Travel at Night</h4>
+          <p>Share your live location with a trusted contact. Prefer well-lit, busy roads. Sit near the driver in autos/taxis. Verify OLA/Uber driver details before getting in.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="digital">
+        <div class="tip-num">08</div>
+        <div class="tip-content">
+          <div class="tip-tag digital">Digital Safety</div>
+          <h4>Protect Your Privacy Online</h4>
+          <p>Never share your real-time location publicly on social media. Set all accounts to private. Be cautious of strangers asking for personal information online.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="digital">
+        <div class="tip-num">09</div>
+        <div class="tip-content">
+          <div class="tip-tag digital">Digital Safety</div>
+          <h4>Beware of Stalkerware</h4>
+          <p>Check your phone for unknown apps that track your location. Signs include battery draining fast, phone getting hot, or unusual data usage. Use trusted security apps.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="legal">
+        <div class="tip-num">10</div>
+        <div class="tip-content">
+          <div class="tip-tag legal">Legal Rights</div>
+          <h4>Section 354 IPC — Your Protection</h4>
+          <p>Any man who assaults or uses criminal force on a woman intending to outrage her modesty can be imprisoned for up to 5 years. Know your rights — report immediately.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="legal">
+        <div class="tip-num">11</div>
+        <div class="tip-content">
+          <div class="tip-tag legal">Legal Rights</div>
+          <h4>Zero FIR — File Anywhere</h4>
+          <p>You can file a Zero FIR at ANY police station regardless of jurisdiction. The police cannot refuse to register your complaint. Demand it if they refuse.</p>
+        </div>
+      </div>
+      <div class="tip-card" data-cat="legal">
+        <div class="tip-num">12</div>
+        <div class="tip-content">
+          <div class="tip-tag legal">Legal Rights</div>
+          <h4>Right to Free Legal Aid</h4>
+          <p>Every woman who is a victim of crime has the right to free legal aid under the Legal Services Authorities Act. Contact your nearest District Legal Services Authority.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: PROFILE
+══════════════════════════════════ -->
+<div id="page-profile" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('page-home')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+    <h2>My Profile</h2>
+    <div></div>
+  </div>
+  <div class="page-body">
+    <div class="profile-card">
+      <div class="profile-avatar" id="prof-avatar">S</div>
+      <h3 id="prof-name">Safira User</h3>
+      <p id="prof-phone">+91 XXXXX XXXXX</p>
+    </div>
+    <div class="profile-details">
+      <div class="profile-row"><span>Email</span><strong id="prof-email">—</strong></div>
+      <div class="profile-row"><span>Age</span><strong id="prof-age">—</strong></div>
+      <div class="profile-row"><span>Address</span><strong id="prof-address">—</strong></div>
+      <div class="profile-row"><span>State</span><strong id="prof-state">—</strong></div>
+    </div>
+    <button class="btn-outline" onclick="showPage('page-contacts')">Manage Emergency Contacts</button>
+    <button class="btn-danger" onclick="doLogout()">Logout</button>
+  </div>
+</div>
+
+<!-- SOS Overlay -->
+<div class="sos-overlay" id="sosOverlay">
+  <h2>🚨 SOS Activated</h2>
+  <p>Sending emergency alert + live GPS location to your contacts</p>
+  <div class="sos-countdown" id="sosCount">3</div>
+  <div class="sos-notifying" id="sos-contacts-display"></div>
+  <button class="sos-cancel" onclick="cancelSOS()">Cancel SOS</button>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
